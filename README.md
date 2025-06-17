@@ -21,10 +21,10 @@ There's a small message client built on top of the RPC service. To run it:
    - To block another user, use:
         - `block <user>`
    - **NEW** Push/Pull messaging using causal multicast:
-         - To enable push messaging (messages will be delivered without the need to 'pull'), use:
-             - 'push'
-         - To go back ot pull messaging, use:
-             - 'pull'
+      - To enable push messaging (messages will be delivered without the need to 'pull'), use:
+          - 'push'
+      - To go back ot pull messaging, use:
+          - 'pull'
 
 ### Test Instructions
 - There is an end-to-end test suite implemented, that will simulate chats between clients, and assert that all messages are delivered in causal order. To use, run:
