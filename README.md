@@ -1,3 +1,40 @@
+## Run Instructions
+There's a small message client built on top of the RPC service. To run it:
+
+1. Start the db daemon:
+   `go run cmd/dbd/dbd.go &`
+   - It will start listening on an address/port and print out that address.
+2. Start the message daemon:
+   `go run cmd/messaged/messaged.go addr:port &`
+   - where `addr:port` is the address/port the db daemon is listening on.
+3. Start the auth daemon:
+   `go run cmd/authd/authd.go addr:port &`
+4. Finally, connect as many chat clients as you would like.
+   `go run cmd/chat/chat.go 127.0.0.1:46756 s/l user pass`
+   -  `s` will sign a new user up, `l` will allow you to login to an existing user account.
+   - To send a message, use:
+        - `s <user> <message>`
+   - To read your inbox, use:
+        -  `read`
+   -  To allow another user to send you messages, use:
+        - `allow <user>`
+   - To block another user, use:
+        - `block <user>`
+   - **NEW** Push/Pull messaging using causal multicast:
+         - To enable push messaging (messages will be delivered without the need to 'pull'), use:
+             - 'push'
+         - To go back ot pull messaging, use:
+             - 'pull'
+
+### Test Instructions
+- There is an end-to-end test suite implemented, that will simulate chats between clients, and assert that all messages are delivered in causal order. To use, run:
+  - `./cmd/test/runTestCaseGrid.sh numWindows testName`
+        - `testName` is one of the json files (without the `.json` suffix) in the `testInputs` folder.
+        - `numWindows` is the number of clients spawned. Each client will be spawned in a separate terminal window, the windows will be placed in a grid.
+  - Please note that this test script only works on macos with iTerm2 installed. It relies on appscript to spawn and organize the terminal windows.
+  - You can manually run a test by starting all the daemons, and then launching the desired number of clients manually with:
+        - `go run cmd/testChat/testChat.go addr:port testName`
+
 Clearly and concisely addresses at least the following points.
 1. If you used our implementation for `transport` and `rpc`, describe briefly the strengths and weakness of the `transport` protocol.  Compare our `rpc` package to yours.
     - **Strengths**
